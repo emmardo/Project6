@@ -2,93 +2,82 @@ package com.openclassrooms.Project6.Models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "transaction", catalog = "pay_my_buddy")
 public class Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int transactionId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_id")
+    private int id;
 
-    @OneToOne
-    private Account accountId;
+    @ManyToOne
+    @Column(name = "fk_transaction_type_id")
+    private TransactionType transactionType;
 
-    @OneToOne
-    private User userId;
+    @ManyToOne
+    @Column(name = "fk_account_id")
+    private Account account;
 
-    @OneToOne
-    private Connection connectionId;
+    @ManyToOne
+    @Column(name = "fk_connection_id")
+    private Connection connection;
 
-    @OneToOne
-    private TransactionType transactionTypeId;
+    @ManyToOne
+    @Column(name = "fk_iban_id")
+    private Iban iban;
 
     @NotBlank
-    private Timestamp timestamp;
+    private float balanceBeforeTransaction;
 
     @NotBlank
     private float moneyAmountVariation;
 
     @NotBlank
-    private float balanceBeforeTransaction;
+    private Date madeAt;
 
-    private String description;
+    private String origin;
 
-    public int getTransactionId() {
-        return transactionId;
+    public int getId() {
+        return id;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Account getAccountId() {
-        return accountId;
+    public TransactionType getTransactionType() {
+        return transactionType;
     }
 
-    public void setAccountId(Account accountId) {
-        this.accountId = accountId;
+    public void setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
     }
 
-    public User getUserId() {
-        return userId;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
-    public Connection getConnectionId() {
-        return connectionId;
+    public Connection getConnection() {
+        return connection;
     }
 
-    public void setConnectionId(Connection connectionId) {
-        this.connectionId = connectionId;
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
-    public TransactionType getTransactionTypeId() {
-        return transactionTypeId;
+    public Iban getIban() {
+        return iban;
     }
 
-    public void setTransactionTypeId(TransactionType transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
-    }
-
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public float getMoneyAmountVariation() {
-        return moneyAmountVariation;
-    }
-
-    public void setMoneyAmountVariation(float moneyAmountVariation) {
-        this.moneyAmountVariation = moneyAmountVariation;
+    public void setIban(Iban iban) {
+        this.iban = iban;
     }
 
     public float getBalanceBeforeTransaction() {
@@ -99,11 +88,27 @@ public class Transaction {
         this.balanceBeforeTransaction = balanceBeforeTransaction;
     }
 
-    public String getDescription() {
-        return description;
+    public float getMoneyAmountVariation() {
+        return moneyAmountVariation;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMoneyAmountVariation(float moneyAmountVariation) {
+        this.moneyAmountVariation = moneyAmountVariation;
+    }
+
+    public Date getMadeAt() {
+        return madeAt;
+    }
+
+    public void setMadeAt(Date madeAt) {
+        this.madeAt = madeAt;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 }

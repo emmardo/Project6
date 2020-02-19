@@ -2,7 +2,7 @@ package com.openclassrooms.Project6.Models;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "account", catalog = "pay_my_buddy")
@@ -10,35 +10,86 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int accountId;
+    @Column(name = "account_id")
+    private int id;
 
     @OneToOne
-    private User userId;
+    @Column(name = "fk_user_id")
+    private User user;
 
-    @NotBlank
-    private float balance;
+    @ManyToOne
+    @Column(name = "fk_account_type_id")
+    private AccountType accountType;
 
-    public int getAccountId() {
-        return accountId;
+    @ManyToOne
+    @Column(name = "fk_account_status_id")
+    private AccountStatus accountStatus;
+
+    @OneToOne
+    @Column(name = "fk_conection_id")
+    private Connection connection;
+
+    @NotNull
+    @Column(name = "current_balance")
+    private float currentBalance;
+
+    public Account() {
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public Account(User user, AccountType accountType, AccountStatus accountStatus, Connection connection, float currentBalance) {
+
+        this.user = user;
+        this.accountType = accountType;
+        this.accountStatus = accountStatus;
+        this.connection = connection;
+        this.currentBalance = currentBalance;
     }
 
-    public User getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public float getBalance() {
-        return balance;
+    public User getUser() {
+        return user;
     }
 
-    public void setBalance(float balance) {
-        this.balance = balance;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public AccountType getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(AccountType accountType) {
+        this.accountType = accountType;
+    }
+
+    public AccountStatus getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(AccountStatus accountStatus) {
+        this.accountStatus = accountStatus;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public float getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(float currentBalance) {
+        this.currentBalance = currentBalance;
     }
 }

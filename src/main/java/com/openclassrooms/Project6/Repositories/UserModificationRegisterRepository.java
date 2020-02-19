@@ -1,0 +1,9 @@
+package com.openclassrooms.Project6.Repositories;
+
+import com.openclassrooms.Project6.Models.UserModificationRegister;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UserModificationRegisterRepository extends JpaRepository<UserModificationRegister, Integer> {
+}

@@ -1,28 +1,40 @@
 package com.openclassrooms.Project6.Models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int roleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id")
+    private int id;
 
-    @NotBlank
-    private enum role {
+    /*3 Roles: SuperUser(1), Admin(2) and Regular(3)*/
+    private String role;
 
-        ADMIN,
-        USER
+    public Role() {
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role(String role) {
+
+        this.role = role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

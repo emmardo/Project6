@@ -1,31 +1,41 @@
 package com.openclassrooms.Project6.Models;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 @Entity
-@Table
+@Table(name = "transaction_type", catalog = "pay_my_buddy")
 public class TransactionType {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int transactionTypeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "transaction_type_id")
+    private int id;
 
-    @NotBlank
-    private enum transactionType {
+    /*5 Types: Incoming(1), Outgoing(2), TopUp(3), Withdrawal(4) and Cancellation(5)*/
+    @Column(name = "transaction_type")
+    private String transactionType;
 
-        Incoming,
-        Outgoing,
-        TopUp,
-        CashOut,
-        Refund
+    public TransactionType() {
     }
 
-    public int getTransactionTypeId() {
-        return transactionTypeId;
+    public TransactionType(String transactionType) {
+
+        this.transactionType = transactionType;
     }
 
-    public void setTransactionTypeId(int transactionTypeId) {
-        this.transactionTypeId = transactionTypeId;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(String transactionType) {
+        this.transactionType = transactionType;
     }
 }

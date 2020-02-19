@@ -5,42 +5,62 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
-@Table
+@Table(name = "user", catalog = "pay_my_buddy")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private int id;
 
-    @NotBlank
+    @ManyToOne
+    @Column(name = "fk_role_id")
+    private Role role;
+
     @Email
     private String email;
 
-    @NotBlank
     @Size(min = 8, max = 25)
     private String password;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "last_updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
 
-    public int getUserId() {
-        return userId;
+    public User() {
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User(String email, String password, Role role) {
+
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getEmail() {

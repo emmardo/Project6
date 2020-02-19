@@ -1,44 +1,54 @@
 package com.openclassrooms.Project6.Models;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 
 @Entity
-@Table
+@Table(name = "connection", catalog = "pay_my_buddy")
 public class Connection {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int connectionId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "connection_id")
+    private int id;
+
+    @ManyToOne
+    @Column(name = "fk_connection_type_id")
+    private ConnectionType connectionType;
 
     @OneToOne
-    private User userId;
+    @Column(name = "fk_user_id")
+    private User user;
 
-    @OneToOne
-    @Email
-    private User email;
-
-    public int getConnectionId() {
-        return connectionId;
+    public Connection() {
     }
 
-    public void setConnectionId(int connectionId) {
-        this.connectionId = connectionId;
+    public Connection(ConnectionType connectionType, User user) {
+
+        this.connectionType = connectionType;
+        this.user = user;
     }
 
-    public User getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public User getEmail() {
-        return email;
+    public ConnectionType getConnectionType() {
+        return connectionType;
     }
 
-    public void setEmail(User email) {
-        this.email = email;
+    public void setConnectionType(ConnectionType connectionType) {
+        this.connectionType = connectionType;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
