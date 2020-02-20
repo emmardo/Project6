@@ -40,6 +40,18 @@ public class Transaction {
 
     private String origin;
 
+    public Transaction() {
+    }
+
+    public Transaction(TransactionType transactionType, Account account, float balanceBeforeTransaction, float moneyAmountVariation, Date madeAt) {
+
+        this.transactionType = transactionType;
+        this.account = account;
+        this.balanceBeforeTransaction = balanceBeforeTransaction;
+        this.moneyAmountVariation = moneyAmountVariation;
+        this.madeAt = madeAt;
+    }
+
     public int getId() {
         return id;
     }

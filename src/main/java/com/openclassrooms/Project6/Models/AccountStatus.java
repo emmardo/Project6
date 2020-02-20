@@ -11,7 +11,7 @@ public class AccountStatus {
     @Column(name = "account_status_id")
     private int id;
 
-    /*4 Status: Active(1), Iactive(2), NotYetActivated(3) and Deactivated(4)*/
+    /*4 Status: Active(1), Inactive(2), NotYetActivated(3) and Deactivated(4)*/
     @Column(name = "account_status")
     private String accountStatus;
 

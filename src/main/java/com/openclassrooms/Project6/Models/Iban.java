@@ -21,6 +21,15 @@ public class Iban {
     @NotBlank
     private String iban;
 
+    public Iban() {
+    }
+
+    public Iban(Account account, String iban) {
+
+        this.account = account;
+        this.iban = iban;
+    }
+
     public int getId() {
         return id;
     }

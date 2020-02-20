@@ -33,6 +33,16 @@ public class UserModificationRegister {
     @Column(name = "new_details")
     private String newDetails;
 
+    public UserModificationRegister() {
+    }
+
+    public UserModificationRegister(User user, UserModificationType userModificationType, Date madeAt) {
+
+        this.user = user;
+        this.userModificationType = userModificationType;
+        this.madeAt = madeAt;
+    }
+
     public int getId() {
         return id;
     }

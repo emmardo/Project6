@@ -24,6 +24,19 @@ public class UserService {
     private ConnectionRepository connectionRepository;
 
 
+
+    public User getUserById(int id) {
+
+        return userRepository.findById(id).get();
+    }
+
+    public User getUserByEmail(String email) {
+
+        return userRepository.findByEmail(email);
+    }
+
+
+    //There is NO "UPDATE" functionality for Admin Users
     public void createAdminUser(String email, String password) {
 
         if(userRepository.findByEmail(email) == null) {
@@ -51,11 +64,12 @@ public class UserService {
 
     public void deleteAdminUser(String email) {
 
-        if(userRepository.findByEmail(email).getRole().getRole() == "Admin") {
+        if(userRepository.findByEmail(email).getRole().getRole().equals("Admin")) {
 
             userRepository.deleteByEmail(email);
         }
     }
+
 
     public void createRegularUser(String email, String password) {
 
@@ -65,7 +79,7 @@ public class UserService {
             String userRole = "Regular";
             Role role = new Role(userRole);
 
-            //Create User and Assign Email, Password and Role
+            //Create User and Assign Email, Password and Role to it
             User user = new User(email, password, role);
 
 
@@ -114,16 +128,6 @@ public class UserService {
         return regularUsersList;
     }
 
-    public User getUserById(int id) {
-
-        return userRepository.findById(id).get();
-    }
-
-    public User getUserByEmail(String email) {
-
-        return userRepository.findByEmail(email);
-    }
-
     public void updateUsersEmailAddress(String currentEmailAddress, String password, String newEmailAddress) {
 
         if(getUserByEmail(currentEmailAddress) != null && getUserByEmail(currentEmailAddress).getPassword().equals(password)) {
@@ -135,7 +139,7 @@ public class UserService {
             user.setUpdatedAt(date);
 
             //Que hacer? save()?
-            userRepository.
+            userRepository.save(user);
         }
     }
 
@@ -153,13 +157,13 @@ public class UserService {
         }
     }
 
-    public void deleteRegularUser(int id) {
+    public void deleteRegularUserById(int id) {
 
-        if(getUserById(id).getRoleId().getRoleId() == 2) {
+        if(getUserById(id).getRole().getRole().equals("Regular")) {
 
-            accountRepository.deleteByUserId(getUserById(id));
+            accountRepository.deleteById(accountRepository.findAccountByUser(getUserById(id)).getId());
 
-            connectionRepository.deleteByUserId(getUserById(id));
+            connectionRepository.deleteById(connectionRepository.findConnectionByUser(getUserById(id)).getId());
 
             userRepository.deleteById(id);
         }
