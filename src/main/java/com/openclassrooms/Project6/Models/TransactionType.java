@@ -11,7 +11,7 @@ public class TransactionType {
     @Column(name = "transaction_type_id")
     private int id;
 
-    /*5 Types: Incoming(1), Outgoing(2), TopUp(3), Withdrawal(4) and Cancellation(5)*/
+    /*4 Types: Regular(1), TopUp(2), Withdrawal(3) and Cancellation(4)*/
     @Column(name = "transaction_type")
     private String transactionType;
 

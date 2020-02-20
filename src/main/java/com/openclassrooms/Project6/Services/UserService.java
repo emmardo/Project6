@@ -154,6 +154,7 @@ public class UserService {
             user.setUpdatedAt(date);
 
             //Que hacer? save()?
+            userRepository.save(user);
         }
     }
 

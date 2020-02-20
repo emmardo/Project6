@@ -30,12 +30,19 @@ public class Transaction {
     private Iban iban;
 
     @NotBlank
-    private float balanceBeforeTransaction;
+    @Column(name = "senders_balance_before_transaction")
+    private float sendersBalanceBeforeTransaction;
 
     @NotBlank
+    @Column(name = "receivers_balance_before_transaction")
+    private float receiversBalanceBeforeTransaction;
+
+    @NotBlank
+    @Column(name = "money_amount_variation")
     private float moneyAmountVariation;
 
     @NotBlank
+    @Column(name = "made_at")
     private Date madeAt;
 
     private String origin;
@@ -43,11 +50,9 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(TransactionType transactionType, Account account, float balanceBeforeTransaction, float moneyAmountVariation, Date madeAt) {
+    public Transaction(TransactionType transactionType, Account account, float moneyAmountVariation, Date madeAt) {
 
         this.transactionType = transactionType;
-        this.account = account;
-        this.balanceBeforeTransaction = balanceBeforeTransaction;
         this.moneyAmountVariation = moneyAmountVariation;
         this.madeAt = madeAt;
     }
@@ -92,12 +97,20 @@ public class Transaction {
         this.iban = iban;
     }
 
-    public float getBalanceBeforeTransaction() {
-        return balanceBeforeTransaction;
+    public float getSendersBalanceBeforeTransaction() {
+        return sendersBalanceBeforeTransaction;
     }
 
-    public void setBalanceBeforeTransaction(float balanceBeforeTransaction) {
-        this.balanceBeforeTransaction = balanceBeforeTransaction;
+    public void setSendersBalanceBeforeTransaction(float sendersBalanceBeforeTransaction) {
+        this.sendersBalanceBeforeTransaction = sendersBalanceBeforeTransaction;
+    }
+
+    public float getReceiversBalanceBeforeTransaction() {
+        return receiversBalanceBeforeTransaction;
+    }
+
+    public void setReceiversBalanceBeforeTransaction(float receiversBalanceBeforeTransaction) {
+        this.receiversBalanceBeforeTransaction = receiversBalanceBeforeTransaction;
     }
 
     public float getMoneyAmountVariation() {
