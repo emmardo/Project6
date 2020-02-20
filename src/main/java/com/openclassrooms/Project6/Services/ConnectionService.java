@@ -15,21 +15,9 @@ public class ConnectionService {
     private ConnectionRepository connectionRepository;
 
 
-    private Connection getConnectionByConnectionId(int connectionId) {
-
-        return connectionRepository.findConnectionById(connectionId);
-    }
-
-
     private Connection getConnectionByEmail(String email) {
 
         return connectionRepository.findConnectionByUserEmail(email);
-    }
-
-
-    private Connection getConnectionByUserId(int userId) {
-
-        return connectionRepository.findConnectionByUserId(userId);
     }
 
 
@@ -39,14 +27,10 @@ public class ConnectionService {
     }
 
 
-    private List<Connection> getAllRegularConnections() {
+    private List<Connection> getAllConnectionsByType(String connectionType) {
 
-        return connectionRepository.findAll().stream().filter(c -> c.getConnectionType().getConnectionType().equals("Regular")).collect(Collectors.toList());
-    }
-
-
-    private List<Connection> getAllCompanyConnections() {
-
-        return connectionRepository.findAll().stream().filter(c -> c.getConnectionType().getConnectionType().equals("Company")).collect(Collectors.toList());
+        return connectionRepository.findAll().stream()
+                .filter(c -> c.getConnectionType().getConnectionType().equals(connectionType))
+                .collect(Collectors.toList());
     }
 }

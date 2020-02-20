@@ -24,18 +24,6 @@ public class UserService {
     private ConnectionRepository connectionRepository;
 
 
-
-    public User getUserById(int id) {
-
-        return userRepository.findById(id).get();
-    }
-
-    public User getUserByEmail(String email) {
-
-        return userRepository.findByEmail(email);
-    }
-
-
     //There is NO "UPDATE" functionality for Admin Users
     public void createAdminUser(String email, String password) {
 
@@ -53,30 +41,12 @@ public class UserService {
         }
     }
 
-    public List<User> getAllAdminUsers() {
 
-        List<User> allUsersList = userRepository.findAll();
-
-        List<User> adminUsersList = allUsersList.stream().filter(u -> u.getRole().getRole().equals("Admin")).collect(Collectors.toList());
-
-        return adminUsersList;
-    }
-
-    public void deleteAdminUser(String email) {
-
-        if(userRepository.findByEmail(email).getRole().getRole().equals("Admin")) {
-
-            userRepository.deleteByEmail(email);
-        }
-    }
-
-
-    public void createRegularUser(String email, String password) {
+    public void createUserByRole(String email, String password, String userRole) {
 
         if(userRepository.findByEmail(email) == null) {
 
             //Create Role
-            String userRole = "Regular";
             Role role = new Role(userRole);
 
             //Create User and Assign Email, Password and Role to it
@@ -89,7 +59,7 @@ public class UserService {
 
 
             //Create AccountType
-            String accountTypeString = "Regular";
+            String accountTypeString = userRole;
             AccountType accountType = new AccountType(accountTypeString);
 
 
@@ -99,7 +69,7 @@ public class UserService {
 
 
             //Create ConnectionType
-            String connectionTypeString = "Regular";
+            String connectionTypeString = userRole;
             ConnectionType connectionType = new ConnectionType(connectionTypeString);
 
 
@@ -119,54 +89,65 @@ public class UserService {
         }
     }
 
-    public List<User> getAllRegularUsers() {
+    public User getUserByEmail(String userEmail) {
 
-        List<User> allUsersList = userRepository.findAll();
+        User newUser = null;
 
-        List<User> regularUsersList = allUsersList.stream().filter(u -> u.getRole().getRole().equals("Regular")).collect(Collectors.toList());
+        if(userRepository.findByEmail(userEmail) == null) {
 
-        return regularUsersList;
+            newUser = userRepository.findByEmail(userEmail);
+        }
+
+        return newUser;
+    }
+
+    public List<User> getAllUsersByRole(String role) {
+
+        return userRepository.findAll().stream().filter(u -> u.getRole().getRole().equals(role))
+                .collect(Collectors.toList());
     }
 
     public void updateUsersEmailAddress(String currentEmailAddress, String password, String newEmailAddress) {
 
-        if(getUserByEmail(currentEmailAddress) != null && getUserByEmail(currentEmailAddress).getPassword().equals(password)) {
+        if(userRepository.findByEmail(currentEmailAddress) != null
+                && userRepository.findByEmail(currentEmailAddress).getPassword().equals(password)) {
 
-            User user = getUserByEmail(currentEmailAddress);
+            User user = userRepository.findByEmail(currentEmailAddress);
             user.setEmail(newEmailAddress);
 
             Date date = new Date();
             user.setUpdatedAt(date);
 
-            //Que hacer? save()?
             userRepository.save(user);
         }
     }
 
     public void updateUsersPassword(String emailAddress, String currentPassword, String newPassword) {
 
-        if(getUserByEmail(emailAddress) != null && getUserByEmail(emailAddress).getPassword().equals(currentPassword)) {
+        if(userRepository.findByEmail(emailAddress) != null
+                && userRepository.findByEmail(emailAddress).getPassword().equals(currentPassword)) {
 
-            User user = getUserByEmail(emailAddress);
+            User user = userRepository.findByEmail(emailAddress);
             user.setPassword(newPassword);
 
             Date date = new Date();
             user.setUpdatedAt(date);
 
-            //Que hacer? save()?
             userRepository.save(user);
         }
     }
 
-    public void deleteRegularUserById(int id) {
 
-        if(getUserById(id).getRole().getRole().equals("Regular")) {
+    public void deleteUserByEmail(String userEmail, String password, String regularAdminOrCompany) {
 
-            accountRepository.deleteById(accountRepository.findAccountByUser(getUserById(id)).getId());
+        if(userRepository.findByEmail(userEmail) != null && userRepository.findByEmail(userEmail).getRole().getRole().equals(regularAdminOrCompany)
+                && userRepository.findByEmail(userEmail).getPassword().equals(password)) {
 
-            connectionRepository.deleteById(connectionRepository.findConnectionByUser(getUserById(id)).getId());
+            accountRepository.delete(accountRepository.findAccountByUserEmail(userEmail));
 
-            userRepository.deleteById(id);
+            connectionRepository.delete(connectionRepository.findConnectionByUserEmail(userEmail));
+
+            userRepository.delete(userRepository.findByEmail(userEmail));
         }
     }
 }

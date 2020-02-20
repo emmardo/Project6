@@ -11,7 +11,7 @@ public class Role {
     @Column(name = "role_id")
     private int id;
 
-    /*3 Roles: SuperUser(1), Admin(2) and Regular(3)*/
+    /*3 Roles: Company(1), Admin(2) and Regular(3)*/
     private String role;
 
     public Role() {
