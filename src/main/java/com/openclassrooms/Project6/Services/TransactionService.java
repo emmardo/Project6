@@ -154,6 +154,12 @@ public class TransactionService {
     }
 
 
+    public Transaction getTransactionById(int transactionId) {
+
+        return transactionRepository.findById(transactionId).get();
+    }
+
+
     public List<Transaction> getAllRegularTransactionsAsSenderByUserEmail(String userEmail) {
 
         List<Transaction> newList = transactionRepository.findTransactionsByAccountUserEmail(userEmail).stream()
@@ -284,24 +290,42 @@ public class TransactionService {
     }
 
 
-    public List<Transaction> getAllTransactionsByUserEmailAndTransactionTypes(String userEmail, String transactionType) {
+    public List<Transaction> getAllRegularAccountsTransactions() {
 
-        List<Transaction> filteredList = new ArrayList<>();
-
-        if((transactionType.equals("Regular") || transactionType.equals("TopUp")
-                || transactionType.equals("Withdrawal")
-                || transactionType.equals("Cancellation"))
-
-                && accountRepository.findAccountByUserEmail(userEmail).getUser().getEmail() != null) {
-
-            List<Transaction> filteredByEmail = transactionRepository.findAll().stream()
-                                                .filter(t -> t.get().getEmail().equals(userEmail)).collect(Collectors.toList())
-
-             filteredByTransactionType = transactionRepository.findAll().stream()
-                    .filter(t -> t.getTransactionType().getTransactionType()
-                            .equals(transactionType)).collect(Collectors.toList());
-        }
-
-        return filteredList;
+        return transactionRepository.findAll().stream()
+                .filter(t -> t.getAccount().getAccountType().getAccountType().equals("Regular"))
+                .collect(Collectors.toList());
     }
+
+
+    /*public List<Transaction> getAllRegularAccountsRegularTransactions() {
+
+        return getAllRegularAccountsTransactions().stream()
+                .filter(t -> t.getTransactionType().getTransactionType().equals("Regular"))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Transaction> getAllRegularAccountsTopUpTransactions() {
+
+        return getAllRegularAccountsTransactions().stream()
+                .filter(t -> t.getTransactionType().getTransactionType().equals("TopUp"))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Transaction> getAllRegularAccountsWithdrawalTransactions() {
+
+        return getAllRegularAccountsTransactions().stream()
+                .filter(t -> t.getTransactionType().getTransactionType().equals("Withdrawal"))
+                .collect(Collectors.toList());
+    }
+
+
+    public List<Transaction> getAllRegularAccountsCancellationTransactions() {
+
+        return getAllRegularAccountsTransactions().stream()
+                .filter(t -> t.getTransactionType().getTransactionType().equals("Cancellation"))
+                .collect(Collectors.toList());
+    }*/
 }

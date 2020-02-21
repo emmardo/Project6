@@ -14,7 +14,7 @@ public class AccountStatusService {
     private AccountStatusRepository accountStatusRepository;
 
 
-    public void createAccountStatus(List<String> accountStatusList) {
+    public void createAccountStatusTypes(List<String> accountStatusList) {
 
         accountStatusRepository.deleteAll();
 
@@ -47,7 +47,7 @@ public class AccountStatusService {
         return accountStatusList;
     }
 
-    public String getAccountStatus(int accountStatusId) {
+    public String getAccountStatusById(int accountStatusId) {
 
         return accountStatusRepository.findAccountStatusById(accountStatusId).getAccountStatus();
     }

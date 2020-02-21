@@ -3,6 +3,7 @@ package com.openclassrooms.Project6.Services;
 import com.openclassrooms.Project6.Models.*;
 import com.openclassrooms.Project6.Repositories.AccountRepository;
 import com.openclassrooms.Project6.Repositories.ConnectionRepository;
+import com.openclassrooms.Project6.Repositories.UserModificationRegisterRepository;
 import com.openclassrooms.Project6.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,19 @@ public class UserService {
     @Autowired
     private ConnectionRepository connectionRepository;
 
+    @Autowired
+    private UserModificationRegisterRepository userModificationRegisterRepository;
+
+
+    public UserService(UserRepository userRepository, AccountRepository accountRepository,
+                       ConnectionRepository connectionRepository,
+                       UserModificationRegisterRepository userModificationRegisterRepository) {
+
+        this.userRepository = userRepository;
+        this.accountRepository = accountRepository;
+        this.connectionRepository = connectionRepository;
+        this.userModificationRegisterRepository = userModificationRegisterRepository;
+    }
 
     //There is NO "UPDATE" functionality for Admin Users
     public void createAdminUser(String email, String password) {
@@ -119,6 +133,15 @@ public class UserService {
             user.setUpdatedAt(date);
 
             userRepository.save(user);
+
+            UserModificationType userModificationType = new UserModificationType("Email");
+
+            UserModificationRegister userModificationRegister = new UserModificationRegister
+                                                                    (user, userModificationType, date);
+            userModificationRegister.setPreviousDetails(currentEmailAddress);
+            userModificationRegister.setNewDetails(newEmailAddress);
+
+            userModificationRegisterRepository.save(userModificationRegister);
         }
     }
 
@@ -134,13 +157,21 @@ public class UserService {
             user.setUpdatedAt(date);
 
             userRepository.save(user);
+
+            UserModificationType userModificationType = new UserModificationType("Password");
+
+            UserModificationRegister userModificationRegister = new UserModificationRegister
+                                                                    (user, userModificationType, date);
+
+            userModificationRegisterRepository.save(userModificationRegister);
         }
     }
 
 
     public void deleteUserByEmail(String userEmail, String password, String regularAdminOrCompany) {
 
-        if(userRepository.findByEmail(userEmail) != null && userRepository.findByEmail(userEmail).getRole().getRole().equals(regularAdminOrCompany)
+        if(userRepository.findByEmail(userEmail) != null
+                && userRepository.findByEmail(userEmail).getRole().getRole().equals(regularAdminOrCompany)
                 && userRepository.findByEmail(userEmail).getPassword().equals(password)) {
 
             accountRepository.delete(accountRepository.findAccountByUserEmail(userEmail));

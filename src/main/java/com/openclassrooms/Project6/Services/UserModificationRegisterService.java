@@ -43,15 +43,15 @@ public class UserModificationRegisterService {
     }
 
 
-    public UserModificationRegister getSingleUserModificationRegisterById(int userModificationRegisterId) {
+    public UserModificationRegister getUserModificationRegisterById(int userModificationRegisterId) {
 
         return userModificationRegisterRepository.findUserModificationRegisterById(userModificationRegisterId);
     }
 
 
-    public List<UserModificationRegister> getAllUsersUserModificationRegistersByEmail(String email) {
+    public List<UserModificationRegister> getAllUserModificationRegistersByUserEmail(String userEmail) {
 
-        return userModificationRegisterRepository.findUserModificationRegisterByUserEmail(email);
+        return userModificationRegisterRepository.findUserModificationRegisterByUserEmail(userEmail);
     }
 
 
@@ -67,9 +67,10 @@ public class UserModificationRegisterService {
     }
 
 
-    public void deleteUsersUserModificationRegistersByEmail(String email) {
+    public void deleteUserModificationRegistersByUserEmail(String userEmail) {
 
-        userModificationRegisterRepository.deleteAll(userModificationRegisterRepository.findUserModificationRegisterByUserEmail(email));
+        userModificationRegisterRepository
+                .deleteAll(userModificationRegisterRepository.findUserModificationRegisterByUserEmail(userEmail));
     }
 
 

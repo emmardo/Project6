@@ -48,7 +48,7 @@ public class ConnectionTypeService {
         return connectionTypes;
     }
 
-    public String getConnectionType(int connectionTypeId) {
+    public String getConnectionTypeById(int connectionTypeId) {
 
         return connectionTypeRepository.findConnectionTypeById(connectionTypeId).getConnectionType();
     }

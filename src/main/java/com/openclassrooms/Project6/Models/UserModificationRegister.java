@@ -1,25 +1,27 @@
 package com.openclassrooms.Project6.Models;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "user_modification_register", catalog = "pay_my_buddy")
+@EntityListeners(AuditingEntityListener.class)
 public class UserModificationRegister {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_modification_register_id")
+    /*@Column(name = "user_modification_register_id")*/
     private int id;
 
     @ManyToOne
-    @Column(name = "fk_user_id")
+    /*@Column(name = "fk_user_id")*/
     private User user;
 
     @ManyToOne
-    @Column(name = "fk_user_modification_type_id")
+    /*@Column(name = "fk_user_modification_type_id")*/
     private UserModificationType userModificationType;
 
     @Column(name = "made_at", nullable = false, updatable = false)

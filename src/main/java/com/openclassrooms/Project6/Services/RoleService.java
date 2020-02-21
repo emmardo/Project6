@@ -48,7 +48,7 @@ public class RoleService {
         return roles;
     }
 
-    public String getRole(int roleId) {
+    public String getRoleById(int roleId) {
 
         return roleRepository.findRoleById(roleId).getRole();
     }

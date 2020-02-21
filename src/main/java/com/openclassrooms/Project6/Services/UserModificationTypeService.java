@@ -48,7 +48,7 @@ public class UserModificationTypeService {
         return userModificationTypes;
     }
 
-    public String getUserModificationType(int userModificationTypeId) {
+    public String getUserModificationTypeById(int userModificationTypeId) {
 
         return userModificationTypeRepository.findUserModificationTypeById(userModificationTypeId).getUserModificationType();
     }

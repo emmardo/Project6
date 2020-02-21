@@ -1,18 +1,21 @@
 package com.openclassrooms.Project6.Models;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "account_status", catalog = "pay_my_buddy")
+@EntityListeners(AuditingEntityListener.class)
 public class AccountStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_status_id")
+    /*@Column(name = "account_status_id")*/
     private int id;
 
     /*4 Status: Active(1), Inactive(2), NotYetActivated(3) and Deactivated(4)*/
-    @Column(name = "account_status")
+    /*@Column(name = "account_status")*/
     private String accountStatus;
 
     public AccountStatus() {

@@ -29,7 +29,7 @@ public class IbanService {
     }
 
 
-    public Iban getIbanByIbanId(int ibanId) {
+    public Iban getIbanById(int ibanId) {
 
         return ibanRepository.findById(ibanId);
     }
@@ -38,12 +38,6 @@ public class IbanService {
     public List<Iban> getAllIbans() {
 
         return ibanRepository.findAll();
-    }
-
-
-    public List<Iban> getAllIbansByAccount(Account account) {
-
-        return ibanRepository.findIbanByAccount(account);
     }
 
 

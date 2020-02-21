@@ -47,7 +47,7 @@ public class AccountTypeService {
         return accountTypes;
     }
 
-    public String getAccountType(int accountTypeId) {
+    public String getAccountTypeById(int accountTypeId) {
 
         return accountTypeRepository.findAccountTypeById(accountTypeId).getAccountType();
     }

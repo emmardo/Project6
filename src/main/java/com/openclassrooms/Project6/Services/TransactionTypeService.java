@@ -48,7 +48,7 @@ public class TransactionTypeService {
         return transactionTypes;
     }
 
-    public String getTransactionType(int transactionTypeId) {
+    public String getTransactionTypeById(int transactionTypeId) {
 
         return transactionTypeRepository.findTransactionTypeById(transactionTypeId).getTransactionType();
     }

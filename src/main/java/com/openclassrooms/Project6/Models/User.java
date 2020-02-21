@@ -2,6 +2,7 @@ package com.openclassrooms.Project6.Models;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,15 +11,16 @@ import java.util.Date;
 
 @Entity
 @Table(name = "user", catalog = "pay_my_buddy")
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    /*@Column(name = "user_id")*/
     private int id;
 
     @ManyToOne
-    @Column(name = "fk_role_id")
+    /*@Column(name = "fk_role_id")*/
     private Role role;
 
     @Email

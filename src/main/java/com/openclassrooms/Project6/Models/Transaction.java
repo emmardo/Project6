@@ -1,32 +1,35 @@
 package com.openclassrooms.Project6.Models;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
 @Table(name = "transaction", catalog = "pay_my_buddy")
+@EntityListeners(AuditingEntityListener.class)
 public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transaction_id")
+    /*@Column(name = "transaction_id")*/
     private int id;
 
     @ManyToOne
-    @Column(name = "fk_transaction_type_id")
+    /*@Column(name = "fk_transaction_type_id")*/
     private TransactionType transactionType;
 
     @ManyToOne
-    @Column(name = "fk_account_id")
+    /*@Column(name = "fk_account_id")*/
     private Account account;
 
     @ManyToOne
-    @Column(name = "fk_connection_id")
+    /*@Column(name = "fk_connection_id")*/
     private Connection connection;
 
     @ManyToOne
-    @Column(name = "fk_iban_id")
+    /*@Column(name = "fk_iban_id")*/
     private Iban iban;
 
     @NotBlank
