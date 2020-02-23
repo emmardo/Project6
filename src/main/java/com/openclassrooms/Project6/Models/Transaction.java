@@ -45,7 +45,7 @@ public class Transaction {
     private float receiversBalanceBeforeTransaction;
 
     @NotBlank
-    @Column(name = "money_amount_variation")
+    @Column(name = "money_variation")
     private float moneyAmount;
 
     @NotBlank

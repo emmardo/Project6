@@ -12,7 +12,7 @@ public class AccountStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "account_status_id")*/
+    @Column(name = "account_status_id")
     private int id;
 
     /*4 Status: Active(1), Inactive(2), NotYetActivated(3) and Deactivated(4)*/

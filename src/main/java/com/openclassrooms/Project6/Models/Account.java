@@ -33,7 +33,7 @@ public class Account {
     private AccountStatus accountStatus;
 
     @OneToOne
-    @JoinColumn(name = "connection_id")
+    @JoinColumn(name = "fk_connection_id")
     /*@Column(name = "fk_conection_id")*/
     private Connection connection;
 
