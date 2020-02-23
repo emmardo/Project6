@@ -40,7 +40,6 @@ public class Transaction {
     @Column(name = "senders_balance_before_transaction")
     private float sendersBalanceBeforeTransaction;
 
-    @NotBlank
     @Column(name = "receivers_balance_before_transaction")
     private float receiversBalanceBeforeTransaction;
 
@@ -60,6 +59,7 @@ public class Transaction {
     public Transaction(TransactionType transactionType, Account account, float moneyAmount, Date madeAt) {
 
         this.transactionType = transactionType;
+        this.account = account;
         this.moneyAmount = moneyAmount;
         this.madeAt = madeAt;
     }

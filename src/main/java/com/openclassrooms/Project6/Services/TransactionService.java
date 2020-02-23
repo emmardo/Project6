@@ -30,6 +30,13 @@ public class TransactionService {
     @Autowired
     private IbanRepository ibanRepository;
 
+    //SET COMPANY'S ACCOUNT EMAIL!!!
+    String companysEmail;
+
+    //FEE SET TO 0.5% AS FLOAT!!!
+    float feeCostInPercentage = 0.5f;
+    float feeCalculationFactor = feeCostInPercentage/100;
+
 
     /*public void createRegularTransaction(String senderUserEmail, String receiverUserEmail, float moneyAmount) {
 
@@ -137,18 +144,28 @@ public class TransactionService {
 
             if(!transactionTypeString.equals("TopUp")) {
 
-                sendersAccount.setCurrentBalance(sendersBalanceBeforeTransaction - moneyAmount);
+                sendersAccount.setCurrentBalance(sendersBalanceBeforeTransaction + moneyAmount);
                 accountRepository.save(sendersAccount);
             }
 
             if(transactionTypeString.equals("Regular")){
 
                 Account receiversAccount = accountRepository.findAccountByUserEmail(receiversEmailOrIbanOrOrigin);
-
                 float receiversBalanceBeforeTransaction = receiversAccount.getCurrentBalance();
+
+                Account companysAccount = accountRepository.findAccountByUserEmail(companysEmail);
+                float companysBalanceBeforeTransaction = companysAccount.getCurrentBalance();
 
                 receiversAccount.setCurrentBalance(receiversBalanceBeforeTransaction + moneyAmount);
                 accountRepository.save(receiversAccount);
+
+                sendersAccount.setCurrentBalance(sendersBalanceBeforeTransaction
+                        - (moneyAmount * (1 + feeCalculationFactor)));
+                accountRepository.save(sendersAccount);
+
+                companysAccount.setCurrentBalance(companysBalanceBeforeTransaction
+                        + (moneyAmount * feeCalculationFactor));
+                accountRepository.save(companysAccount);
 
                 Connection newConnection = connectionRepository.findConnectionByUserEmail(receiversEmailOrIbanOrOrigin);
                 newTransaction.setConnection(newConnection);
@@ -314,6 +331,7 @@ public class TransactionService {
 
             float balanceAvailableMinusTransaction = (accountRepository.findAccountByUserEmail(sendersEmail)
                     .getCurrentBalance() - moneyAmount);
+
             if(transactionTypeString.equals("TopUp")) {
 
                 value = true;
@@ -328,7 +346,8 @@ public class TransactionService {
 
                     }else{
 
-                        if(activeAccountValidator(receiversEmailOrIbanOrOrigin)) {
+                        if(activeAccountValidator(receiversEmailOrIbanOrOrigin)
+                            && (balanceAvailableMinusTransaction - (moneyAmount*feeCalculationFactor)) >= 0) {
 
                             value = true;
                         }
