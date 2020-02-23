@@ -3,9 +3,10 @@ package com.openclassrooms.Project6.Models;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table
+@Table(name = "role")
 @EntityListeners(AuditingEntityListener.class)
 public class Role {
 
@@ -16,6 +17,9 @@ public class Role {
 
     /*3 Roles: Company(1), Admin(2) and Regular(3)*/
     private String role;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     public Role() {
     }
@@ -39,5 +43,13 @@ public class Role {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

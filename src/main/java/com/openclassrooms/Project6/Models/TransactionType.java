@@ -3,6 +3,7 @@ package com.openclassrooms.Project6.Models;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "transaction_type", catalog = "pay_my_buddy")
@@ -14,9 +15,12 @@ public class TransactionType {
     /*@Column(name = "transaction_type_id")*/
     private int id;
 
-    /*4 Types: Regular(1), TopUp(2), Withdrawal(3) and Cancellation(4)*/
+    /*3 Types: Regular(1), TopUp(2) and Withdrawal(3)*/
     @Column(name = "transaction_type")
     private String transactionType;
+
+    @OneToMany(mappedBy = "transactionType")
+    private List<Transaction> transactions;
 
     public TransactionType() {
     }
@@ -40,5 +44,13 @@ public class TransactionType {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

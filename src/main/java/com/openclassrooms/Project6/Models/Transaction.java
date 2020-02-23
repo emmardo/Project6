@@ -16,19 +16,23 @@ public class Transaction {
     /*@Column(name = "transaction_id")*/
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_transaction_type_id")
     /*@Column(name = "fk_transaction_type_id")*/
     private TransactionType transactionType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_account_id")
     /*@Column(name = "fk_account_id")*/
     private Account account;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_connection_id")
     /*@Column(name = "fk_connection_id")*/
     private Connection connection;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_iban_id")
     /*@Column(name = "fk_iban_id")*/
     private Iban iban;
 
@@ -42,7 +46,7 @@ public class Transaction {
 
     @NotBlank
     @Column(name = "money_amount_variation")
-    private float moneyAmountVariation;
+    private float moneyAmount;
 
     @NotBlank
     @Column(name = "made_at")
@@ -53,10 +57,10 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Transaction(TransactionType transactionType, Account account, float moneyAmountVariation, Date madeAt) {
+    public Transaction(TransactionType transactionType, Account account, float moneyAmount, Date madeAt) {
 
         this.transactionType = transactionType;
-        this.moneyAmountVariation = moneyAmountVariation;
+        this.moneyAmount = moneyAmount;
         this.madeAt = madeAt;
     }
 
@@ -116,12 +120,12 @@ public class Transaction {
         this.receiversBalanceBeforeTransaction = receiversBalanceBeforeTransaction;
     }
 
-    public float getMoneyAmountVariation() {
-        return moneyAmountVariation;
+    public float getMoneyAmount() {
+        return moneyAmount;
     }
 
-    public void setMoneyAmountVariation(float moneyAmountVariation) {
-        this.moneyAmountVariation = moneyAmountVariation;
+    public void setMoneyAmount(float moneyAmount) {
+        this.moneyAmount = moneyAmount;
     }
 
     public Date getMadeAt() {

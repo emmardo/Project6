@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class TransactionService {
     private IbanRepository ibanRepository;
 
 
-    public void createRegularTransaction(String senderUserEmail, String receiverUserEmail, float moneyAmountVariation) {
+    /*public void createRegularTransaction(String senderUserEmail, String receiverUserEmail, float moneyAmount) {
 
         Account senderAccount = accountRepository.findAccountByUserEmail(senderUserEmail);
 
@@ -38,25 +39,25 @@ public class TransactionService {
 
         if(senderAccount.getAccountStatus().getAccountStatus().equals("Active")
                 && receiverAccount.getAccountStatus().getAccountStatus().equals("Active")
-                && (senderAccount.getCurrentBalance() - moneyAmountVariation) >= 0) {
+                && (senderAccount.getCurrentBalance() - moneyAmount) >= 0) {
 
             float sendersBalanceBeforeTransaction = senderAccount.getCurrentBalance();
-            senderAccount.setCurrentBalance(sendersBalanceBeforeTransaction - moneyAmountVariation);
+            senderAccount.setCurrentBalance(sendersBalanceBeforeTransaction - moneyAmount);
             accountRepository.save(senderAccount);
 
 
             float receiversBalanceBeforeTransaction = receiverAccount.getCurrentBalance();
-            receiverAccount.setCurrentBalance(receiversBalanceBeforeTransaction + moneyAmountVariation);
+            receiverAccount.setCurrentBalance(receiversBalanceBeforeTransaction + moneyAmount);
             accountRepository.save(receiverAccount);
 
-            String transactionTypeString = "Regular";
-            TransactionType transactionType = new TransactionType(transactionTypeString);
+           *//* String transactionTypeString = "Regular";
+            TransactionType transactionType = new TransactionType(transactionTypeString);*//*
 
             Connection newConnection = connectionRepository.findConnectionByUserEmail(receiverUserEmail);
 
-            Date madeAt = new Date();
+            *//*Date madeAt = new Date();*//*
 
-            Transaction newTransaction = new Transaction(transactionType, senderAccount, moneyAmountVariation, madeAt);
+            *//*Transaction newTransaction = new Transaction(transactionType, senderAccount, moneyAmount, madeAt);*//*
             newTransaction.setConnection(newConnection);
             newTransaction.setSendersBalanceBeforeTransaction(sendersBalanceBeforeTransaction);
             newTransaction.setReceiversBalanceBeforeTransaction(receiversBalanceBeforeTransaction);
@@ -64,23 +65,23 @@ public class TransactionService {
         }
     }
 
-
-    public void createTopUpTransaction(String userEmail, float moneyAmountVariation, String origin) {
+    // cambiar nombre del float y sacar origin
+    public void createTopUpTransaction(String userEmail, float moneyAmount, String origin) {
 
         Account account = accountRepository.findAccountByUserEmail(userEmail);
 
         if(account.getAccountStatus().getAccountStatus().equals("Active")) {
 
             float balanceBeforeTransaction = account.getCurrentBalance();
-            account.setCurrentBalance(balanceBeforeTransaction + moneyAmountVariation);
+            account.setCurrentBalance(balanceBeforeTransaction + moneyAmount);
             accountRepository.save(account);
 
-            String transactionTypeString = "TopUp";
+           *//* String transactionTypeString = "TopUp";
             TransactionType transactionType = new TransactionType(transactionTypeString);
 
             Date madeAt = new Date();
 
-            Transaction newTransaction = new Transaction(transactionType, account, moneyAmountVariation, madeAt);
+            Transaction newTransaction = new Transaction(transactionType, account, moneyAmount, madeAt);*//*
             newTransaction.setSendersBalanceBeforeTransaction(balanceBeforeTransaction);
             newTransaction.setOrigin(origin);
             transactionRepository.save(newTransaction);
@@ -88,21 +89,21 @@ public class TransactionService {
     }
 
 
-    public void createWithdrawalTransaction(String userEmail, String ibanString, float moneyAmountVariation) {
+    public void createWithdrawalTransaction(String userEmail, String ibanString, float moneyAmount) {
 
         Account account = accountRepository.findAccountByUserEmail(userEmail);
 
         if(account.getAccountStatus().getAccountStatus().equals("Active")
-                && (account.getCurrentBalance() - moneyAmountVariation) >= 0) {
+                && (account.getCurrentBalance() - moneyAmount) >= 0) {
 
             float balanceBeforeTransaction = account.getCurrentBalance();
-            account.setCurrentBalance(balanceBeforeTransaction - moneyAmountVariation);
+            account.setCurrentBalance(balanceBeforeTransaction - moneyAmount);
             accountRepository.save(account);
 
-            String transactionTypeString = "Withdrawal";
+            *//*String transactionTypeString = "Withdrawal";
             TransactionType transactionType = new TransactionType(transactionTypeString);
 
-            Date madeAt = new Date();
+            Date madeAt = new Date();*//*
 
             if(ibanRepository.findByAccount_UserEmail(userEmail).stream().noneMatch(i -> i.getIban().equals(ibanString))) {
 
@@ -111,44 +112,67 @@ public class TransactionService {
                 ibanRepository.save(newIban);
             }
 
-            Transaction newTransaction = new Transaction(transactionType, account, moneyAmountVariation, madeAt);
+            *//*Transaction newTransaction = new Transaction(transactionType, account, moneyAmount, madeAt);*//*
             newTransaction.setIban(new Iban(account, ibanString));
             newTransaction.setSendersBalanceBeforeTransaction(balanceBeforeTransaction);
             transactionRepository.save(newTransaction);
         }
-    }
+    }*/
 
+    public void createTransactionByTransactionType(String transactionTypeString, String sendersEmail,
+                                                   float moneyAmount, String receiversEmailOrIbanOrOrigin) {
 
-    public void createCancellationTransaction (Transaction transactionToCancel) {
+        if(transactionConditionsValidator(transactionTypeString, sendersEmail, moneyAmount,
+                receiversEmailOrIbanOrOrigin)){
 
-        Account senderAtOriginAccount = accountRepository.findAccountByUserEmail(transactionToCancel.getAccount().getUser().getEmail());
-        Account receiverAtOriginAccount = accountRepository.findAccountByUserEmail(transactionToCancel.getConnection().getUser().getEmail());
-        float moneyAmountVariation = transactionToCancel.getMoneyAmountVariation();
-
-        if(senderAtOriginAccount.getAccountStatus().getAccountStatus().equals("Active")
-                && receiverAtOriginAccount.getAccountStatus().getAccountStatus().equals("Active")
-                && (receiverAtOriginAccount.getCurrentBalance() - moneyAmountVariation) >= 0) {
-
-            float receiverAtOriginsBalanceBeforeTransaction = receiverAtOriginAccount.getCurrentBalance();
-            receiverAtOriginAccount.setCurrentBalance(receiverAtOriginsBalanceBeforeTransaction - moneyAmountVariation);
-            accountRepository.save(receiverAtOriginAccount);
-
-
-            float senderAtOriginsBalanceBeforeTransaction = senderAtOriginAccount.getCurrentBalance();
-            senderAtOriginAccount.setCurrentBalance(senderAtOriginsBalanceBeforeTransaction + moneyAmountVariation);
-            accountRepository.save(senderAtOriginAccount);
-
-            String transactionTypeString = "Cancellation";
-            TransactionType transactionType = new TransactionType(transactionTypeString);
-
-            Connection newConnection = connectionRepository.findConnectionByUserEmail(senderAtOriginAccount.getUser().getEmail());
+            Account sendersAccount = accountRepository.findAccountByUserEmail(sendersEmail);
+            float sendersBalanceBeforeTransaction = sendersAccount.getCurrentBalance();
 
             Date madeAt = new Date();
 
-            Transaction newTransaction = new Transaction(transactionType, receiverAtOriginAccount, moneyAmountVariation, madeAt);
-            newTransaction.setConnection(newConnection);
-            newTransaction.setSendersBalanceBeforeTransaction(receiverAtOriginsBalanceBeforeTransaction);
-            newTransaction.setReceiversBalanceBeforeTransaction(senderAtOriginsBalanceBeforeTransaction);
+            TransactionType transactionType = new TransactionType(transactionTypeString);
+
+            Transaction newTransaction = new Transaction(transactionType, sendersAccount, moneyAmount, madeAt);
+            newTransaction.setSendersBalanceBeforeTransaction(sendersBalanceBeforeTransaction);
+
+            if(!transactionTypeString.equals("TopUp")) {
+
+                sendersAccount.setCurrentBalance(sendersBalanceBeforeTransaction - moneyAmount);
+                accountRepository.save(sendersAccount);
+            }
+
+            if(transactionTypeString.equals("Regular")){
+
+                Account receiversAccount = accountRepository.findAccountByUserEmail(receiversEmailOrIbanOrOrigin);
+
+                float receiversBalanceBeforeTransaction = receiversAccount.getCurrentBalance();
+
+                receiversAccount.setCurrentBalance(receiversBalanceBeforeTransaction + moneyAmount);
+                accountRepository.save(receiversAccount);
+
+                Connection newConnection = connectionRepository.findConnectionByUserEmail(receiversEmailOrIbanOrOrigin);
+                newTransaction.setConnection(newConnection);
+                newTransaction.setReceiversBalanceBeforeTransaction(receiversBalanceBeforeTransaction);
+
+            }else if(transactionTypeString.equals("TopUp")) {
+
+                sendersAccount.setCurrentBalance(sendersBalanceBeforeTransaction + moneyAmount);
+                accountRepository.save(sendersAccount);
+
+                newTransaction.setOrigin(receiversEmailOrIbanOrOrigin);
+
+            }else if(transactionTypeString.equals("Withdrawal")) {
+
+                newTransaction.setIban(new Iban(sendersAccount, receiversEmailOrIbanOrOrigin));
+
+                if(ibanRepository.findByAccount_UserEmail(sendersEmail).stream()
+                        .noneMatch(i -> i.getIban().equals(receiversEmailOrIbanOrOrigin))) {
+
+                    Iban newIban = new Iban(sendersAccount, receiversEmailOrIbanOrOrigin);
+
+                    ibanRepository.save(newIban);
+                }
+            }
             transactionRepository.save(newTransaction);
         }
     }
@@ -159,8 +183,40 @@ public class TransactionService {
         return transactionRepository.findById(transactionId).get();
     }
 
+    public List<Transaction> getAllTransactions() {
 
-    public List<Transaction> getAllRegularTransactionsAsSenderByUserEmail(String userEmail) {
+        return transactionRepository.findAll();
+    }
+
+    //Added "Receiver" as Transaction Type to show Transactions received by User
+    public List<Transaction> getAUsersTransactionsByEmailAndTransactionType(String userEmail, String transactionType) {
+
+        List<Transaction> list = new ArrayList<>();
+
+        if((transactionTypeValidator(transactionType) || transactionType.equals("Receiver"))
+            && activeAccountValidator(userEmail)) {
+
+            if(!transactionType.equals("Receiver")) {
+
+                list = filterTransactionsByTransactionType(transactionType).stream().filter(t -> t.getAccount()
+                        .getUser().getEmail().equals(userEmail)).collect(Collectors.toList());
+
+                if(transactionType.equals("All")) {
+
+                    list.addAll(transactionRepository.findTransactionsByConnectionUserEmail(userEmail));
+                }
+
+            }else{
+
+                list = transactionRepository.findTransactionsByConnectionUserEmail(userEmail);
+            }
+        }
+
+        return list;
+    }
+
+
+    /*public List<Transaction> getAllRegularTransactionsAsSenderByUserEmail(String userEmail) {
 
         List<Transaction> newList = transactionRepository.findTransactionsByAccountUserEmail(userEmail).stream()
                                         .filter(t -> t.getTransactionType().getTransactionType().equals("Regular"))
@@ -172,9 +228,7 @@ public class TransactionService {
 
     public List<Transaction> getAllRegularTransactionsAsReceiverByUserEmail(String userEmail) {
 
-        List<Transaction> newList = transactionRepository.findTransactionsByConnectionUserEmail(userEmail).stream()
-                                        .filter(t -> t.getTransactionType().getTransactionType().equals("Regular"))
-                                        .collect(Collectors.toList());
+        List<Transaction> newList = transactionRepository.findTransactionsByConnectionUserEmail(userEmail);
 
         return newList;
     }
@@ -222,37 +276,6 @@ public class TransactionService {
     }
 
 
-    public List<Transaction> getAllCancellationTransactionsAsSenderByUserEmail(String userEmail) {
-
-        List<Transaction> newList = transactionRepository.findTransactionsByAccountUserEmail(userEmail).stream()
-                .filter(t -> t.getTransactionType().getTransactionType().equals("Cancellation"))
-                .collect(Collectors.toList());
-
-        return newList;
-    }
-
-
-    public List<Transaction> getAllCancellationTransactionsAsReceiverByUserEmail(String userEmail) {
-
-        List<Transaction> newList = transactionRepository.findTransactionsByConnectionUserEmail(userEmail).stream()
-                .filter(t -> t.getTransactionType().getTransactionType().equals("Cancellation"))
-                .collect(Collectors.toList());
-
-        return newList;
-    }
-
-
-    public List<Transaction> getAllCancellationTransactionsByUserEmail(String userEmail) {
-
-        List<Transaction> newList = new ArrayList<>();
-
-        newList.addAll(getAllCancellationTransactionsAsSenderByUserEmail(userEmail));
-        newList.addAll(getAllCancellationTransactionsAsReceiverByUserEmail(userEmail));
-
-        return newList;
-    }
-
-
     public List<Transaction> getAllUserTransactionsByUserEmail(String userEmail) {
 
         List<Transaction> newList = new ArrayList<>();
@@ -261,40 +284,120 @@ public class TransactionService {
         newList.addAll(getAllRegularTransactionsAsReceiverByUserEmail(userEmail));
         newList.addAll(getAllTopUpTransactionsByUserEmail(userEmail));
         newList.addAll(getAllWithdrawalTransactionsByUserEmail(userEmail));
-        newList.addAll(getAllCancellationTransactionsAsSenderByUserEmail(userEmail));
-        newList.addAll(getAllCancellationTransactionsAsReceiverByUserEmail(userEmail));
+
+        return newList;
+    }*/
+
+
+    public List<Transaction> getAllTransactionsByAccountAndTransactionType(String accountType,
+                                                                           String transactionType) {
+
+        List<Transaction> newList = new ArrayList<>();
+
+        if(accountTypeValidator(accountType) && transactionTypeValidator(transactionType)) {
+
+            List<Transaction> filteredList = filterTransactionsByTransactionType(transactionType);
+
+            newList = filteredList.stream().filter(t -> t.getAccount().getAccountType().getAccountType()
+                        .equals(accountType)).collect(Collectors.toList());
+        }
 
         return newList;
     }
 
 
-    public List<Transaction> getAllTransactionsByAccountAndTransactionTypes(String accountType, String transactionType) {
+    public boolean transactionConditionsValidator(String transactionTypeString, String sendersEmail,
+                                                  float moneyAmount, String receiversEmailOrIbanOrOrigin) {
+        boolean value = false;
 
-        List<Transaction> filteredList = new ArrayList<>();
+        if(transactionTypeValidator(transactionTypeString) && activeAccountValidator(sendersEmail)) {
 
-        if((accountType.equals("Regular") || accountType.equals("Company"))
+            float balanceAvailableMinusTransaction = (accountRepository.findAccountByUserEmail(sendersEmail)
+                    .getCurrentBalance() - moneyAmount);
+            if(transactionTypeString.equals("TopUp")) {
 
-                && (transactionType.equals("Regular") || transactionType.equals("TopUp")
-                || transactionType.equals("Withdrawal")
-                || transactionType.equals("Cancellation"))) {
+                value = true;
 
-            List<Transaction> filteredByAccountType = transactionRepository.findAll().stream()
-                                                        .filter(t -> t.getAccount().getAccountType().getAccountType()
-                                                        .equals(accountType)).collect(Collectors.toList());
+            }else{
 
-            filteredList = filteredByAccountType.stream().filter(t -> t.getTransactionType().getTransactionType()
-                                                        .equals(transactionType)).collect(Collectors.toList());
+                if(balanceAvailableMinusTransaction >= 0) {
+
+                    if(transactionTypeString.equals("Withdrawal")) {
+
+                        value = true;
+
+                    }else{
+
+                        if(activeAccountValidator(receiversEmailOrIbanOrOrigin)) {
+
+                            value = true;
+                        }
+                    }
+                }
+            }
         }
-
-        return filteredList;
+        return value;
     }
 
 
-    public List<Transaction> getAllRegularAccountsTransactions() {
+    public boolean accountTypeValidator(String accountType) {
 
-        return transactionRepository.findAll().stream()
-                .filter(t -> t.getAccount().getAccountType().getAccountType().equals("Regular"))
-                .collect(Collectors.toList());
+        boolean value = false;
+
+        if(Arrays.asList("Regular", "Company").contains(accountType)) {
+
+            value = true;
+        }
+
+        return value;
+    }
+
+
+    public boolean transactionTypeValidator(String transactionType) {
+
+        boolean value = false;
+
+        if(Arrays.asList("Regular", "TopUp", "Withdrawal", "All").contains(transactionType)) {
+
+            value = true;
+        }
+
+        return value;
+    }
+
+
+    public boolean activeAccountValidator(String userEmail) {
+
+        boolean value = false;
+
+        if(accountRepository.findAccountByUserEmail(userEmail).getAccountStatus().getAccountStatus()
+                .equals("Active")) {
+
+            value = true;
+        }
+
+        return value;
+    }
+
+
+    public List<Transaction> filterTransactionsByTransactionType(String transactionType) {
+
+        List<Transaction> newList = new ArrayList<>();
+
+        if(transactionTypeValidator(transactionType)) {
+
+            if(!transactionType.equals("All")) {
+
+                newList = transactionRepository.findAll().stream().filter(t -> t.getTransactionType()
+                        .getTransactionType().equals(transactionType)).collect(Collectors.toList());
+
+            }else{
+
+                newList = getAllTransactions();
+            }
+        }
+
+        return newList;
     }
 
 

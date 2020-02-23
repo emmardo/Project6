@@ -3,6 +3,7 @@ package com.openclassrooms.Project6.Models;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "account_status", catalog = "pay_my_buddy")
@@ -17,6 +18,9 @@ public class AccountStatus {
     /*4 Status: Active(1), Inactive(2), NotYetActivated(3) and Deactivated(4)*/
     /*@Column(name = "account_status")*/
     private String accountStatus;
+
+    @OneToMany(mappedBy = "accountStatus")
+    private List<Account> accounts;
 
     public AccountStatus() {
     }

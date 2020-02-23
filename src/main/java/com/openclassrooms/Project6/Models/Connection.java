@@ -3,6 +3,7 @@ package com.openclassrooms.Project6.Models;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "connection", catalog = "pay_my_buddy")
@@ -14,13 +15,18 @@ public class Connection {
     /*@Column(name = "connection_id")*/
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_connection_type_id")
     /*@Column(name = "fk_connection_type_id")*/
     private ConnectionType connectionType;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     /*@Column(name = "fk_user_id")*/
     private User user;
+
+    @OneToMany(mappedBy = "connection")
+    private List<Transaction> transactions;
 
     public Connection() {
     }
@@ -53,5 +59,13 @@ public class Connection {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

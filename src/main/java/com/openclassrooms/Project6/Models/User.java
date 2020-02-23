@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user", catalog = "pay_my_buddy")
@@ -19,7 +20,8 @@ public class User {
     /*@Column(name = "user_id")*/
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_role_id")
     /*@Column(name = "fk_role_id")*/
     private Role role;
 
@@ -38,6 +40,15 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserModificationRegister> userModificationRegisters;
+
+    @OneToOne(mappedBy = "account")
+    private Account account;
+
+    @OneToOne(mappedBy = "connection")
+    private Connection connection;
 
     public User() {
     }
@@ -95,5 +106,29 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<UserModificationRegister> getUserModificationRegisters() {
+        return userModificationRegisters;
+    }
+
+    public void setUserModificationRegisters(List<UserModificationRegister> userModificationRegisters) {
+        this.userModificationRegisters = userModificationRegisters;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

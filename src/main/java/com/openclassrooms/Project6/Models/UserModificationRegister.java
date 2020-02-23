@@ -16,11 +16,13 @@ public class UserModificationRegister {
     /*@Column(name = "user_modification_register_id")*/
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user_id")
     /*@Column(name = "fk_user_id")*/
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_user_modification_type_id")
     /*@Column(name = "fk_user_modification_type_id")*/
     private UserModificationType userModificationType;
 

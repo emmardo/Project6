@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "account", catalog = "pay_my_buddy")
@@ -13,28 +14,38 @@ public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "account_id")*/
+    @Column(name = "account_id")
     private int id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     /*@Column(name = "fk_user_id")*/
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_account_type_id")
     /*@Column(name = "fk_account_type_id")*/
     private AccountType accountType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_account_status_id")
     /*@Column(name = "fk_account_status_id")*/
     private AccountStatus accountStatus;
 
     @OneToOne
+    @JoinColumn(name = "connection_id", referencedColumnName = "connection_id")
     /*@Column(name = "fk_conection_id")*/
     private Connection connection;
 
     @NotNull
     /*@Column(name = "current_balance")*/
     private float currentBalance;
+
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions;
+
+    @OneToMany(mappedBy = "account")
+    private List<Iban> ibans;
 
     public Account() {
     }

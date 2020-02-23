@@ -3,6 +3,7 @@ package com.openclassrooms.Project6.Models;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "account_type", catalog = "pay_my_buddy")
@@ -17,6 +18,9 @@ public class AccountType {
     /*2 Types: Regular(1) and Company(2)*/
     @Column(name = "account_type")
     private String accountType;
+
+    @OneToMany(mappedBy = "accountType")
+    private List<Account> accounts;
 
     public AccountType(String accountType) {
 
@@ -40,5 +44,13 @@ public class AccountType {
 
     public void setAccountType(String accountType) {
         this.accountType = accountType;
+    }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 }

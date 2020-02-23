@@ -8,6 +8,7 @@ import com.openclassrooms.Project6.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,27 +39,11 @@ public class UserService {
         this.userModificationRegisterRepository = userModificationRegisterRepository;
     }
 
-    //There is NO "UPDATE" functionality for Admin Users
-    public void createAdminUser(String email, String password) {
-
-        if(userRepository.findByEmail(email) == null) {
-
-            String adminUser = "Admin";
-            Role role = new Role(adminUser);
-
-            User user = new User(email, password, role);
-
-            Date date = new Date();
-            user.setCreatedAt(date);
-
-            userRepository.save(user);
-        }
-    }
-
 
     public void createUserByRole(String email, String password, String userRole) {
 
-        if(userRepository.findByEmail(email) == null) {
+        if(userAccountExistenceValidatorByEmail(email) && userRoleValidator(userRole)
+            && (password != null || !password.isEmpty())) {
 
             //Create Role
             Role role = new Role(userRole);
@@ -66,40 +51,36 @@ public class UserService {
             //Create User and Assign Email, Password and Role to it
             User user = new User(email, password, role);
 
-
             //Create Date and Assign it to the Created User
             Date date = new Date();
             user.setCreatedAt(date);
 
-
-            //Create AccountType
-            String accountTypeString = userRole;
-            AccountType accountType = new AccountType(accountTypeString);
-
-
-            //Create AccountStatus
-            String accountStatusString = "Active";
-            AccountStatus accountStatus = new AccountStatus(accountStatusString);
-
-
-            //Create ConnectionType
-            String connectionTypeString = userRole;
-            ConnectionType connectionType = new ConnectionType(connectionTypeString);
-
-
-            //Create Connection
-            Connection connection = new Connection(connectionType, user);
-
-
-            //Create Account and Assign it a Balance of 0£
-            Account account = new Account(user, accountType, accountStatus, connection, 0);
-
-
             userRepository.save(user);
 
-            connectionRepository.save(connection);
+            if(userRole != "Admin") {
 
-            accountRepository.save(account);
+                //Create AccountType
+                String accountTypeString = userRole;
+                AccountType accountType = new AccountType(accountTypeString);
+
+                //Create AccountStatus
+                String accountStatusString = "Active";
+                AccountStatus accountStatus = new AccountStatus(accountStatusString);
+
+                //Create ConnectionType
+                String connectionTypeString = userRole;
+                ConnectionType connectionType = new ConnectionType(connectionTypeString);
+
+                //Create Connection
+                Connection connection = new Connection(connectionType, user);
+
+                //Create Account and Assign it a Balance of 0£
+                Account account = new Account(user, accountType, accountStatus, connection, 0);
+
+                connectionRepository.save(connection);
+
+                accountRepository.save(account);
+            }
         }
     }
 
@@ -107,7 +88,7 @@ public class UserService {
 
         User newUser = null;
 
-        if(userRepository.findByEmail(userEmail) == null) {
+        if(userAccountExistenceValidatorByEmail(userEmail)) {
 
             newUser = userRepository.findByEmail(userEmail);
         }
@@ -123,10 +104,10 @@ public class UserService {
 
     public void updateUsersEmailAddress(String currentEmailAddress, String password, String newEmailAddress) {
 
-        if(userRepository.findByEmail(currentEmailAddress) != null
-                && userRepository.findByEmail(currentEmailAddress).getPassword().equals(password)) {
+        if(userAccountExistenceValidatorByEmail(currentEmailAddress)
+                && passwordValidator(currentEmailAddress, password)) {
 
-            User user = userRepository.findByEmail(currentEmailAddress);
+            User user = getUserByEmail(currentEmailAddress);
             user.setEmail(newEmailAddress);
 
             Date date = new Date();
@@ -147,10 +128,9 @@ public class UserService {
 
     public void updateUsersPassword(String emailAddress, String currentPassword, String newPassword) {
 
-        if(userRepository.findByEmail(emailAddress) != null
-                && userRepository.findByEmail(emailAddress).getPassword().equals(currentPassword)) {
+        if(userAccountExistenceValidatorByEmail(emailAddress) && passwordValidator(emailAddress, currentPassword)) {
 
-            User user = userRepository.findByEmail(emailAddress);
+            User user = getUserByEmail(emailAddress);
             user.setPassword(newPassword);
 
             Date date = new Date();
@@ -168,11 +148,9 @@ public class UserService {
     }
 
 
-    public void deleteUserByEmail(String userEmail, String password, String regularAdminOrCompany) {
+    public void deleteUserByEmail(String userEmail, String password) {
 
-        if(userRepository.findByEmail(userEmail) != null
-                && userRepository.findByEmail(userEmail).getRole().getRole().equals(regularAdminOrCompany)
-                && userRepository.findByEmail(userEmail).getPassword().equals(password)) {
+        if(userAccountExistenceValidatorByEmail(userEmail) && passwordValidator(userEmail, password)) {
 
             accountRepository.delete(accountRepository.findAccountByUserEmail(userEmail));
 
@@ -180,5 +158,54 @@ public class UserService {
 
             userRepository.delete(userRepository.findByEmail(userEmail));
         }
+    }
+
+
+    public boolean userAccountExistenceValidatorByEmail(String email) {
+
+        boolean value = false;
+
+        if(email != null || !email.isEmpty()) {
+
+            if(!userRepository.findByEmail(email).getEmail().isEmpty()) {
+
+                value = true;
+            }
+        }
+
+        return value;
+    }
+
+
+    public boolean userRoleValidator(String role) {
+
+        boolean value = false;
+
+        if(role != null || !role.isEmpty()) {
+
+            if(Arrays.asList("Company", "Admin", "Regular").contains(role)) {
+
+                value = true;
+            }
+        }
+
+        return value;
+    }
+
+    public boolean passwordValidator(String email, String password) {
+
+        boolean value = false;
+
+        if((email != null || !email.isEmpty())
+            && (password != null || !password.isEmpty())
+            && userAccountExistenceValidatorByEmail(email)) {
+
+            if(userRepository.findByEmail(email).getPassword().equals(password)) {
+
+                value = true;
+            }
+        }
+
+        return value;
     }
 }

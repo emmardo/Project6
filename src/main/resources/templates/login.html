@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <link type="text/css" rel="stylesheet" href="../static/css/index.css">
+    <link type="text/css" rel="stylesheet" href="../static/css/login.css">
     <title>Login Page</title>
 </head>
 <body>
 <div class="loginBoxBody">
-    <div class="parts" id="Header"><h2>Pay My Buddy</h2></div>
-        <div class="parts" ><input class="TextBoxes" name="EmailBox" type="text" placeholder="Email"/></div><br/>
+    <form name="f" th:action="@{/login}" method="post">
+        <fieldset>
+            <legend>Pay My Buddy</legend>
+            <div th:if="${param.error}" class="alert alert-error">Invalid Username or Password</div>
+            <div th:if="${param.logout}" class="alert alert-success">You have been logged out</div>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username"/>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"/>
+            <div class="form-actions">
+                <button type="submit" class="btn">Log In</button>
+            </div>
+            <!--<div class="parts" ><input class="TextBoxes" name="EmailBox" type="text" placeholder="Email"/></div><br/>
         <div class="parts" ><input class="TextBoxes" name="Password" type="text" placeholder="Password"/></div><br/>
         <div class="parts" ><input name="SessionKeeper" type="checkbox" />Remember me</div><br/>
-        <div class="parts" ><button  id="Button" type="button">Submit</button></div>
+        <div class="parts" ><button  id="Button" type="button">Submit</button></div>-->
+        </fieldset>
+    </form>
 </div>
 </body>
 </html>

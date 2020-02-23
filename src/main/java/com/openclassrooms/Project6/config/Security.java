@@ -16,7 +16,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .formLogin()
 
                 //just changed "/login" from "/"
-                .loginPage("/login")
+                .loginPage("/")
                 .permitAll();
     }
 }
