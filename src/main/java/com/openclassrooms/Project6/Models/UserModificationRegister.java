@@ -13,7 +13,7 @@ public class UserModificationRegister {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "user_modification_register_id")*/
+    @Column(name = "user_modification_register_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

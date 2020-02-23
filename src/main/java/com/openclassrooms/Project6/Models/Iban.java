@@ -14,7 +14,7 @@ public class Iban {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "iban_id")*/
+    @Column(name = "iban_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

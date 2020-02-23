@@ -12,7 +12,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "role_id")*/
+    @Column(name = "role_id")
     private int id;
 
     /*3 Roles: Company(1), Admin(2) and Regular(3)*/

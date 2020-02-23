@@ -12,7 +12,7 @@ public class AccountType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "account_type_id")*/
+    @Column(name = "account_type_id")
     private int id;
 
     /*2 Types: Regular(1) and Company(2)*/

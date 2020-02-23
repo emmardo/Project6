@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "user_id")*/
+    @Column(name = "user_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,10 +44,12 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserModificationRegister> userModificationRegisters;
 
-    @OneToOne(mappedBy = "account")
+    //changed mapped from "account"
+    @OneToOne(mappedBy = "user")
     private Account account;
 
-    @OneToOne(mappedBy = "connection")
+    //changed mapped from "connection"
+    @OneToOne(mappedBy = "user")
     private Connection connection;
 
     public User() {

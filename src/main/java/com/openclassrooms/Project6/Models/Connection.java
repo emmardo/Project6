@@ -12,7 +12,7 @@ public class Connection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "connection_id")*/
+    @Column(name = "connection_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,7 +21,7 @@ public class Connection {
     private ConnectionType connectionType;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "fk_user_id")
     /*@Column(name = "fk_user_id")*/
     private User user;
 

@@ -13,7 +13,7 @@ public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "transaction_id")*/
+    @Column(name = "transaction_id")
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)

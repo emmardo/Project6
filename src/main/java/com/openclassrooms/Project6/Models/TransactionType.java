@@ -12,7 +12,7 @@ public class TransactionType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "transaction_type_id")*/
+    @Column(name = "transaction_type_id")
     private int id;
 
     /*3 Types: Regular(1), TopUp(2) and Withdrawal(3)*/

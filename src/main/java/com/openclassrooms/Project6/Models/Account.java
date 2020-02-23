@@ -18,7 +18,7 @@ public class Account {
     private int id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "fk_user_id")
     /*@Column(name = "fk_user_id")*/
     private User user;
 
@@ -33,7 +33,7 @@ public class Account {
     private AccountStatus accountStatus;
 
     @OneToOne
-    @JoinColumn(name = "connection_id", referencedColumnName = "connection_id")
+    @JoinColumn(name = "connection_id")
     /*@Column(name = "fk_conection_id")*/
     private Connection connection;
 

@@ -9,11 +9,11 @@ public class UserModificationType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "user_modification_type_id")*/
+    @Column(name = "user_modification_type_id")
     private int id;
 
     /*2 Types: Email(1) and Password(2)*/
-    /*@Column(name = "user_modification_type")*/
+    @Column(name = "user_modification_type")
     private String  userModificationType;
 
     @OneToMany(mappedBy = "userModificationType")

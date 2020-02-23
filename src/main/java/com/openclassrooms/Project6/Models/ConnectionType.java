@@ -12,7 +12,7 @@ public class ConnectionType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*@Column(name = "connection_type_id")*/
+    @Column(name = "connection_type_id")
     private int id;
 
     /*2 Types: Regular(1) and Company(2)*/
