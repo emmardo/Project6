@@ -5,9 +5,6 @@ import com.openclassrooms.Project6.Repositories.ConnectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 public class ConnectionService {
 
@@ -21,7 +18,7 @@ public class ConnectionService {
     }
 
 
-    private List<Connection> getAllConnections() {
+    /*private List<Connection> getAllConnections() {
 
         return connectionRepository.findAll();
     }
@@ -32,5 +29,5 @@ public class ConnectionService {
         return connectionRepository.findAll().stream()
                 .filter(c -> c.getConnectionType().getConnectionType().equals(connectionType))
                 .collect(Collectors.toList());
-    }
+    }*/
 }

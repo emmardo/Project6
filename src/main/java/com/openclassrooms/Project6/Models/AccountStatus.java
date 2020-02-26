@@ -45,4 +45,12 @@ public class AccountStatus {
     public void setAccountStatus(String accountStatus) {
         this.accountStatus = accountStatus;
     }
+
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
 }

@@ -29,16 +29,16 @@ public class IbanService {
     }
 
 
-    public Iban getIbanById(int ibanId) {
+   /* public Iban getIbanById(int ibanId) {
 
         return ibanRepository.findById(ibanId);
-    }
+    }*/
 
 
-    public List<Iban> getAllIbans() {
+    /*public List<Iban> getAllIbans() {
 
         return ibanRepository.findAll();
-    }
+    }*/
 
 
     public List<Iban> getAllIbansByEmail(String email) {
@@ -47,17 +47,17 @@ public class IbanService {
     }
 
 
-    public void updateIban(String existingIban, String newIban) {
+    /*public void updateIban(String existingIban, String newIban) {
 
-        Iban iban = getAllIbans().stream().filter(i -> i.getIban().equals(existingIban)).findFirst().get();
+        Iban iban = ibanRepository.findAll().stream().filter(i -> i.getIban().equals(existingIban)).findFirst().get();
 
         iban.setIban(newIban);
 
         ibanRepository.save(iban);
-    }
+    }*/
 
 
-    public void deleteIbanById(int ibanId) {
+    /*public void deleteIbanById(int ibanId) {
 
         ibanRepository.deleteById(ibanId);
     }
@@ -66,11 +66,11 @@ public class IbanService {
     public void deleteIbanByIban(String iban) {
 
         ibanRepository.deleteIbanByIban(iban);
-    }
+    }*/
 
 
-    public void deleteAllIbanByEmail(String email) {
+    /*public void deleteAllIbanByEmail(String email) {
 
         ibanRepository.deleteAllByAccountUserEmail(email);
-    }
+    }*/
 }

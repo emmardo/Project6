@@ -26,12 +26,12 @@ public class UserModificationTypeService {
         }
     }
 
-    public void addUserModificationType(String userModificationType) {
+    /*public void addUserModificationType(String userModificationType) {
 
         UserModificationType userModificationTypeInstance = new UserModificationType(userModificationType);
 
         userModificationTypeRepository.save(userModificationTypeInstance);
-    }
+    }*/
 
     public List<String> getAllUserModificationTypes() {
 
@@ -48,7 +48,7 @@ public class UserModificationTypeService {
         return userModificationTypes;
     }
 
-    public String getUserModificationTypeById(int userModificationTypeId) {
+    /*public String getUserModificationTypeById(int userModificationTypeId) {
 
         return userModificationTypeRepository.findUserModificationTypeById(userModificationTypeId).getUserModificationType();
     }
@@ -56,5 +56,5 @@ public class UserModificationTypeService {
     public void deleteUserModificationType(String userModificationType) {
 
         userModificationTypeRepository.delete(userModificationTypeRepository.findUserModificationTypeByUserModificationType(userModificationType));
-    }
+    }*/
 }

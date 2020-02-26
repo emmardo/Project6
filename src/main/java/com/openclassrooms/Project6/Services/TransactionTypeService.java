@@ -26,12 +26,12 @@ public class TransactionTypeService {
         }
     }
 
-    public void addTransactionType(String transactionType) {
+    /*public void addTransactionType(String transactionType) {
 
         TransactionType transactionTypeInstance = new TransactionType(transactionType);
 
         transactionTypeRepository.save(transactionTypeInstance);
-    }
+    }*/
 
     public List<String> getAllTransactionTypes() {
 
@@ -48,7 +48,7 @@ public class TransactionTypeService {
         return transactionTypes;
     }
 
-    public String getTransactionTypeById(int transactionTypeId) {
+    /*public String getTransactionTypeById(int transactionTypeId) {
 
         return transactionTypeRepository.findTransactionTypeById(transactionTypeId).getTransactionType();
     }
@@ -56,5 +56,5 @@ public class TransactionTypeService {
     public void deleteTransactionType(String transactionType) {
 
         transactionTypeRepository.delete(transactionTypeRepository.findTransactionTypeByTransactionType(transactionType));
-    }
+    }*/
 }

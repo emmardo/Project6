@@ -26,12 +26,12 @@ public class ConnectionTypeService {
         }
     }
 
-    public void addConnectionType(String connectionType) {
+    /*public void addConnectionType(String connectionType) {
 
         ConnectionType connectionTypeInstance = new ConnectionType(connectionType);
 
         connectionTypeRepository.save(connectionTypeInstance);
-    }
+    }*/
 
     public List<String> getAllConnectionTypes() {
 
@@ -48,7 +48,7 @@ public class ConnectionTypeService {
         return connectionTypes;
     }
 
-    public String getConnectionTypeById(int connectionTypeId) {
+    /*public String getConnectionTypeById(int connectionTypeId) {
 
         return connectionTypeRepository.findConnectionTypeById(connectionTypeId).getConnectionType();
     }
@@ -56,5 +56,5 @@ public class ConnectionTypeService {
     public void deleteConnectionType(String connectionType) {
 
         connectionTypeRepository.delete(connectionTypeRepository.findConnectionTypeByConnectionType(connectionType));
-    }
+    }*/
 }

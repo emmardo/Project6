@@ -26,12 +26,12 @@ public class RoleService {
         }
     }
 
-    public void addRole(String role) {
+    /*public void addRole(String role) {
 
         Role roleInstance = new Role(role);
 
         roleRepository.save(roleInstance);
-    }
+    }*/
 
     public List<String> getAllRoles() {
 
@@ -48,13 +48,13 @@ public class RoleService {
         return roles;
     }
 
-    public String getRoleById(int roleId) {
+    /*public String getRoleById(int roleId) {
 
         return roleRepository.findRoleById(roleId).getRole();
-    }
+    }*/
 
-    public void deleteRole(String role) {
+    /*public void deleteRole(String role) {
 
         roleRepository.delete(roleRepository.findRoleByRole(role));
-    }
+    }*/
 }

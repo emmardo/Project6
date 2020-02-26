@@ -195,7 +195,7 @@ public class TransactionService {
     }
 
 
-    public Transaction getTransactionById(int transactionId) {
+    /*public Transaction getTransactionById(int transactionId) {
 
         return transactionRepository.findById(transactionId).get();
     }
@@ -203,7 +203,10 @@ public class TransactionService {
     public List<Transaction> getAllTransactions() {
 
         return transactionRepository.findAll();
-    }
+    }*/
+
+
+    //CORRECT TO BE ABLE TO GET ALL TRANSACTIONS
 
     //Added "Receiver" as Transaction Type to show Transactions received by User
     public List<Transaction> getAUsersTransactionsByEmailAndTransactionType(String userEmail, String transactionType) {
@@ -306,7 +309,7 @@ public class TransactionService {
     }*/
 
 
-    public List<Transaction> getAllTransactionsByAccountAndTransactionType(String accountType,
+    /*public List<Transaction> getAllTransactionsByAccountAndTransactionType(String accountType,
                                                                            String transactionType) {
 
         List<Transaction> newList = new ArrayList<>();
@@ -320,7 +323,7 @@ public class TransactionService {
         }
 
         return newList;
-    }
+    }*/
 
 
     public boolean transactionConditionsValidator(String transactionTypeString, String sendersEmail,
@@ -358,7 +361,7 @@ public class TransactionService {
         return value;
     }
 
-
+    //CHECK IF I NEED IT
     public boolean accountTypeValidator(String accountType) {
 
         boolean value = false;
@@ -412,7 +415,7 @@ public class TransactionService {
 
             }else{
 
-                newList = getAllTransactions();
+                newList = transactionRepository.findAll();
             }
         }
 

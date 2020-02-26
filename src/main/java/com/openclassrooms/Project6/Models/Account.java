@@ -106,4 +106,20 @@ public class Account {
     public void setCurrentBalance(float currentBalance) {
         this.currentBalance = currentBalance;
     }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    public List<Iban> getIbans() {
+        return ibans;
+    }
+
+    public void setIbans(List<Iban> ibans) {
+        this.ibans = ibans;
+    }
 }

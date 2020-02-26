@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -96,11 +94,11 @@ public class UserService {
         return newUser;
     }
 
-    public List<User> getAllUsersByRole(String role) {
+    /*public List<User> getAllUsersByRole(String role) {
 
         return userRepository.findAll().stream().filter(u -> u.getRole().getRole().equals(role))
                 .collect(Collectors.toList());
-    }
+    }*/
 
     public void updateUsersEmailAddress(String currentEmailAddress, String password, String newEmailAddress) {
 

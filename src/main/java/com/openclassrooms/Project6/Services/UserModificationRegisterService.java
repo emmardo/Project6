@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class UserModificationRegisterService {
@@ -43,7 +42,7 @@ public class UserModificationRegisterService {
     }
 
 
-    public UserModificationRegister getUserModificationRegisterById(int userModificationRegisterId) {
+    /*public UserModificationRegister getUserModificationRegisterById(int userModificationRegisterId) {
 
         return userModificationRegisterRepository.findUserModificationRegisterById(userModificationRegisterId);
     }
@@ -77,5 +76,5 @@ public class UserModificationRegisterService {
     public void deleteAllUserModificationRegisters() {
 
         userModificationRegisterRepository.deleteAll();
-    }
+    }*/
 }

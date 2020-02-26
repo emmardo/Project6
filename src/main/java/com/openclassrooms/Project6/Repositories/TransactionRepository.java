@@ -9,7 +9,5 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
-    List<Transaction> findTransactionsByAccountUserEmail(String userEmail);
-
     List<Transaction> findTransactionsByConnectionUserEmail(String userEmail);
 }

@@ -26,12 +26,12 @@ public class AccountTypeService {
         }
     }
 
-    public void addAccountType(String accountType) {
+    /*public void addAccountType(String accountType) {
 
         AccountType accountTypeInstance = new AccountType(accountType);
 
         accountTypeRepository.save(accountTypeInstance);
-    }
+    }*/
 
     public List<String> getAllAccountTypes() {
 
@@ -47,7 +47,7 @@ public class AccountTypeService {
         return accountTypes;
     }
 
-    public String getAccountTypeById(int accountTypeId) {
+    /*public String getAccountTypeById(int accountTypeId) {
 
         return accountTypeRepository.findAccountTypeById(accountTypeId).getAccountType();
     }
@@ -55,5 +55,5 @@ public class AccountTypeService {
     public void deleteAccountType(String accountType) {
 
         accountTypeRepository.delete(accountTypeRepository.findAccountTypeByAccountType(accountType));
-    }
+    }*/
 }
