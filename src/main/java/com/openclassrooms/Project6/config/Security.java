@@ -11,12 +11,31 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .anyRequest().authenticated()
+                    .antMatchers("/resources/**").permitAll().anyRequest().permitAll()
+                    /*.anyRequest().authenticated()*/
                 .and()
-                .formLogin()
+                    .formLogin()
 
-                //just changed "/login" from "/"
-                .loginPage("/")
-                .permitAll();
+                    //just changed "/login" from "/"
+                        .loginPage("/")
+                        .permitAll()
+
+                .and()
+                    .logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .permitAll();
+
+                /*.authorizeRequests()
+                .antMatchers("/css/**", "/products").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+
+                .and()
+                .formLogin().loginPage("/login").failureUrl("/login-error")
+
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")*/
     }
 }

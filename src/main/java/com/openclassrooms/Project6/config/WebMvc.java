@@ -10,7 +10,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 @EnableSpringDataWebSupport
 public class WebMvc implements WebMvcConfigurer {
+
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("login");
+
+        //changed setViewName from "login" to "home"
+        registry.addViewController("/").setViewName("home");
     }
 }
